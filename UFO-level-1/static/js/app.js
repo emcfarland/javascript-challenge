@@ -14,6 +14,7 @@ form.on("submit", filterSightings);
 
 function filterSightings() {
     d3.event.preventDefault();
+    tbody.selectAll("tr").remove();
 
     var inputElement = d3.select("#datetime");
     var inputValue = inputElement.property("value");
