@@ -8,6 +8,22 @@ var tbody = d3.select("#table-area").select("tbody");
 
 addTable(tableData);
 
+button.on("click", filterSightings);
+form.on("submit", filterSightings);
+
+
+function filterSightings() {
+    d3.event.preventDefault();
+
+    var inputElement = d3.select("#datetime");
+    var inputValue = inputElement.property("value");
+
+    console.log(inputValue);
+
+    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+
+    addTable(filteredData);
+}
 
 function addTable(sightings) {
     sightings.forEach(sighting => {
