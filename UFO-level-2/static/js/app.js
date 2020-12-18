@@ -13,14 +13,14 @@ form.on("submit", filterSightings);
 function filterSightings() {
     d3.event.preventDefault();
 
-    var inputElement = d3.select("#datetime");
-    var inputValue = inputElement.property("value");
+    var dateInputValue = d3.select("#datetime").property("value");
+    var cityInputValue = d3.select("#city-name").property("value");
 
-    console.log(inputValue);
+    console.log(dateInputValue);
 
-    if (inputValue != "") {
+    if (dateInputValue != "") {
         tbody.selectAll("tr").remove();
-        var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+        var filteredData = tableData.filter(sighting => sighting.datetime === dateInputValue);
         
         addTable(filteredData);
 
