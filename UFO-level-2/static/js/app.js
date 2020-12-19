@@ -19,38 +19,61 @@ function filterSightings() {
     var countryInputValue = d3.select("#country").property("value");
     var shapeInputValue = d3.select("#shape").property("value");
 
-    var inputs = {
-        "datetime": dateInputValue,
-        "city": cityInputValue,
-        "state": stateInputValue,
-        "country": stateInputValue,
-        "shape": shapeInputValue
-      };
+    var inputValues = [
+        dateInputValue,
+        cityInputValue,
+        stateInputValue,
+        countryInputValue,
+        shapeInputValue
+    ];
+
+    var filterKeys = [
+        "datetime",
+        "city",
+        "state",
+        "country",
+        "shape"
+    ];
+
+
+
     var filteredData = tableData;
+    
+    for (i=0; i<inputValues.length; i++) {
+        if (inputValues[i] !== "") {
+            var partialFilter = filteredData.filter(sighting => inputValues[i] == sighting[filterKeys[i]]);
+            console.log(partialFilter);
+            filteredData = partialFilter;
+        }
+    };
 
-    inputValues.forEach(input => {
-        Object.entries(input).forEach(([key, value]) => {
+    
+    console.log(filteredData);
+    // var filteredData = tableData;
 
-            if (value) {
-                filteredData = filteredData.function(filter => filter[key] === value);
-            }
-        });
-    });
+    // inputValues.forEach(input => {
+    //     Object.entries(input).forEach(([key, value]) => {
 
-    tbody.selectAll("tr").remove();
-    addTable(filteredData);
+    //         if (value) {
+    //             filteredData = filteredData.function(filter => filter[key] === value);
+    //         }
+    //     });
+    // });
 
-    if (dateInputValue != "" || cityInputValue != "") {
-        tbody.selectAll("tr").remove();
-        var filteredData = tableData.filter(sighting => sighting.datetime === dateInputValue)
-                                    .filter(sighting => sighting.city === cityInputValue.toLowerCase());
+    // tbody.selectAll("tr").remove();
+    // addTable(filteredData);
+
+    // if (dateInputValue != "" || cityInputValue != "") {
+    //     tbody.selectAll("tr").remove();
+    //     var filteredData = tableData.filter(sighting => sighting.datetime === dateInputValue)
+    //                                 .filter(sighting => sighting.city === cityInputValue.toLowerCase());
         
-        addTable(filteredData);
+    //     addTable(filteredData);
 
-    } else {
-        tbody.selectAll("tr").remove();
-        addTable(tableData);
-    }
+    // } else {
+    //     tbody.selectAll("tr").remove();
+    //     addTable(tableData);
+    // }
 }
 
 function addTable(sightings) {
