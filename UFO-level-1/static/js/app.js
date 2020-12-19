@@ -25,6 +25,7 @@ function filterSightings() {
         addTable(filteredData);
 
     } else {
+        tbody.selectAll("tr").remove();
         addTable(tableData);
     }
 }

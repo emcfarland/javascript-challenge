@@ -2,7 +2,7 @@
 var tableData = data;
 
 var button = d3.select("#filter-btn");
-var form = d3.select("form");
+var form = d3.select(".form-group");
 
 var tbody = d3.select("#table-area").select("tbody");
 
@@ -14,17 +14,41 @@ function filterSightings() {
     d3.event.preventDefault();
 
     var dateInputValue = d3.select("#datetime").property("value");
-    var cityInputValue = d3.select("#city-name").property("value");
+    var cityInputValue = d3.select("#city").property("value");
+    var stateInputValue = d3.select("#state").property("value");
+    var countryInputValue = d3.select("#country").property("value");
+    var shapeInputValue = d3.select("#shape").property("value");
 
-    console.log(dateInputValue);
+    var inputs = {
+        "datetime": dateInputValue,
+        "city": cityInputValue,
+        "state": stateInputValue,
+        "country": stateInputValue,
+        "shape": shapeInputValue
+      };
+    var filteredData = tableData;
 
-    if (dateInputValue != "") {
+    inputValues.forEach(input => {
+        Object.entries(input).forEach(([key, value]) => {
+
+            if (value) {
+                filteredData = filteredData.function(filter => filter[key] === value);
+            }
+        });
+    });
+
+    tbody.selectAll("tr").remove();
+    addTable(filteredData);
+
+    if (dateInputValue != "" || cityInputValue != "") {
         tbody.selectAll("tr").remove();
-        var filteredData = tableData.filter(sighting => sighting.datetime === dateInputValue);
+        var filteredData = tableData.filter(sighting => sighting.datetime === dateInputValue)
+                                    .filter(sighting => sighting.city === cityInputValue.toLowerCase());
         
         addTable(filteredData);
 
     } else {
+        tbody.selectAll("tr").remove();
         addTable(tableData);
     }
 }
