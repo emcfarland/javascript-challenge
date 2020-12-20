@@ -2,13 +2,8 @@
 var tableData = data;
 
 var button = d3.select("#filter-btn");
-var form = d3.select(".form-group");
-
 var tbody = d3.select("#table-area").select("tbody");
-
 button.on("click", filterSightings);
-form.on("submit", filterSightings);
-
 
 function filterSightings() {
     d3.event.preventDefault();
@@ -27,56 +22,22 @@ function filterSightings() {
         shapeInputValue
     ];
 
-    var filterKeys = [
-        "datetime",
-        "city",
-        "state",
-        "country",
-        "shape"
-    ];
-
-
-
     var filteredData = tableData;
-    
+    var filterKeys = Object.keys(tableData[0]).slice(0,5);
+
     for (i=0; i<inputValues.length; i++) {
         if (inputValues[i] !== "") {
-            var partialFilter = filteredData.filter(sighting => inputValues[i] == sighting[filterKeys[i]]);
+            var partialFilter = filteredData.filter(sighting => inputValues[i].toLowerCase() == sighting[filterKeys[i]]);
             console.log(partialFilter);
             filteredData = partialFilter;
         }
     };
 
-    
-    console.log(filteredData);
-    // var filteredData = tableData;
-
-    // inputValues.forEach(input => {
-    //     Object.entries(input).forEach(([key, value]) => {
-
-    //         if (value) {
-    //             filteredData = filteredData.function(filter => filter[key] === value);
-    //         }
-    //     });
-    // });
-
-    // tbody.selectAll("tr").remove();
-    // addTable(filteredData);
-
-    // if (dateInputValue != "" || cityInputValue != "") {
-    //     tbody.selectAll("tr").remove();
-    //     var filteredData = tableData.filter(sighting => sighting.datetime === dateInputValue)
-    //                                 .filter(sighting => sighting.city === cityInputValue.toLowerCase());
-        
-    //     addTable(filteredData);
-
-    // } else {
-    //     tbody.selectAll("tr").remove();
-    //     addTable(tableData);
-    // }
+    addTable(filteredData);
 }
 
 function addTable(sightings) {
+    tbody.selectAll("tr").remove();
     sightings.forEach(sighting => {
         var row = tbody.append("tr");
         Object.entries(sighting).forEach(([key, value]) => {
