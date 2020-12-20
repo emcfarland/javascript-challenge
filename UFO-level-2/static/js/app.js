@@ -27,7 +27,7 @@ function filterSightings() {
 
     for (i=0; i<inputValues.length; i++) {
         if (inputValues[i] !== "") {
-            var partialFilter = filteredData.filter(sighting => inputValues[i].toLowerCase() == sighting[filterKeys[i]]);
+            var partialFilter = filteredData.filter(sighting => sighting[filterKeys[i]].startsWith(inputValues[i].toLowerCase()));
             console.log(partialFilter);
             filteredData = partialFilter;
         }
@@ -35,6 +35,7 @@ function filterSightings() {
 
     addTable(filteredData);
 }
+
 
 function addTable(sightings) {
     tbody.selectAll("tr").remove();
